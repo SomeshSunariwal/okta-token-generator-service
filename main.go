@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -24,6 +25,12 @@ func main() {
 	e := echo.New()
 
 	AuthToken := USERNAME + ":" + PASSWORD
+
+	PORT := os.Getenv("PORT")
+	if PORT == ""{
+		PORT = "8080"
+	}
+
 
 	Base64Token := b64.StdEncoding.EncodeToString([]byte(AuthToken))
 
@@ -82,5 +89,5 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":"+PORT))
 }
