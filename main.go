@@ -27,6 +27,10 @@ func main() {
 
 	// POST Request to get okta token using auth code
 	e.POST("/token", mainHandler.apiHandler.Token)
+	
+	e.GET("/", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{"message" : "I am working"})
+	})
 
 	// Adding CORS to allow web browser to hit this service endpoint
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
