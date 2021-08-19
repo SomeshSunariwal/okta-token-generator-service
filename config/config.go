@@ -1,7 +1,35 @@
 package config
 
+import "os"
+
 var (
 	HOST          = "https://dev-852842.okta.com"
-	CLIENT_ID     = "0oa43rs29g4wXhT804x7"
-	CLIENT_SECRET = "saqxXSxdT8RKlL1YxoMJpzbQbXVYlrUvHyaQedQc"
+	CLIENT_ID     = "0oa43rs29g4123wXhT804x7"
+	CLIENT_SECRET = "saqxXSxdT8RK123lL1YxoMJpzbQbXVYlrUvHyaQedQc"
 )
+
+type Config struct {
+	HOST          string
+	CLIENT_ID     string
+	CLIENT_SECRET string
+}
+
+func ConfigGenerator() Config {
+	config := Config{}
+	host := os.Getenv("HOST")
+	if host == "" {
+		config.HOST = HOST
+	}
+	
+	clientId := os.Getenv("CLIENT_ID")
+	if clientId == "" {
+		config.HOST = CLIENT_ID
+	}
+
+	clientSecret := os.Getenv("CLIENT_SECRET")
+	if clientSecret == "" {
+		config.HOST = CLIENT_SECRET
+	}
+
+    return config
+}

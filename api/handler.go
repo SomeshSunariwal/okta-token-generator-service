@@ -17,6 +17,9 @@ type Handler struct {
 
 func (handler Handler) Token(context echo.Context) error {
 
+	// GENERATE CONFIG
+	config := config.ConfigGenerator()
+
 	AuthToken := config.CLIENT_ID + ":" + config.CLIENT_SECRET
 
 	Base64Token := b64.StdEncoding.EncodeToString([]byte(AuthToken))
