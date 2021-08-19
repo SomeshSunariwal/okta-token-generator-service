@@ -3,9 +3,9 @@ package config
 import "os"
 
 var (
-	HOST          = "https://dev-852842.okta.com"
-	CLIENT_ID     = "0oa43rs29g4123wXhT804x7"
-	CLIENT_SECRET = "saqxXSxdT8RK123lL1YxoMJpzbQbXVYlrUvHyaQedQc"
+	HOST          = "Your_HOST"
+	CLIENT_ID     = "Your_App_Client_Id"
+	CLIENT_SECRET = "Your_App_Client_Secret"
 )
 
 type Config struct {
