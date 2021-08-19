@@ -30,19 +30,19 @@ func (handler Handler) Token(context echo.Context) error {
 
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Unable to Read Request body"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Unable to Read Request body"})
 	}
 
 	err = json.Unmarshal([]byte(receivedJSON), &RequestData)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Bad Request Body"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Bad Request Body"})
 	}
 
 	Code := RequestData["code"]
 	if Code == nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Authorization Code Not Found"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Authorization Code Not Found"})
 	}
 
 	code := Code.(string)
@@ -52,12 +52,12 @@ func (handler Handler) Token(context echo.Context) error {
 	form.Add("grant_type", "authorization_code")
 	form.Add("code", code)
 	form.Add("redirect_uri", "http://localhost:3000")
-	
-	//Creating Request 
-	req, err := http.NewRequest("POST", config.HOST+ "/oauth2/default/v1/token", strings.NewReader(form.Encode()))
+
+	//Creating Request
+	req, err := http.NewRequest("POST", config.HOST+"/oauth2/default/v1/token", strings.NewReader(form.Encode()))
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Request Errorr"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Request Errorr"})
 	}
 
 	// Attaching Necessary Headers to make request
@@ -72,18 +72,17 @@ func (handler Handler) Token(context echo.Context) error {
 	body, err := ioutil.ReadAll(respNew.Body)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "No Response Error"})
+		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "No Response Error"})
 	}
 
-	
 	// Making Response Json.
 	var ResponseData map[string]interface{}
 	err = json.Unmarshal(body, &ResponseData)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "Unmarshal Error"})
+		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "Unmarshal Error"})
 	}
-	
+
 	if respNew.StatusCode != http.StatusOK {
 		context.Echo().Logger.Info("Error : %v", ResponseData)
 		return context.JSON(respNew.StatusCode, ResponseData)
@@ -101,33 +100,33 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Unable to Read Request body"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Unable to Read Request body"})
 	}
 
 	err = json.Unmarshal([]byte(receivedJSON), &RequestData)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Bad Request Body"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Bad Request Body"})
 	}
 
 	Email := RequestData["email"]
 	if Email == nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Email not Found"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Email not Found"})
 	}
 	email := Email.(string)
-	
-	//Creating Request 
-	req, err := http.NewRequest("DELETE", config.HOST+ "api/v1/users/"+ email, nil)
+
+	//Creating Request
+	req, err := http.NewRequest("DELETE", config.HOST+"api/v1/users/"+email, nil)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Request Errorr"})
+		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Request Errorr"})
 	}
 
 	// Attaching Necessary Headers to make request
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "SSWS "+ config.SSWS_KEY)
+	req.Header.Set("Authorization", "SSWS "+config.SSWS_KEY)
 
 	// Hitting the web server
 	respNew, _ := http.DefaultClient.Do(req)
@@ -136,7 +135,7 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 	body, err := ioutil.ReadAll(respNew.Body)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "No Response Error"})
+		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "No Response Error"})
 	}
 
 	// Making Response Json.
@@ -144,9 +143,9 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 	err = json.Unmarshal(body, &ResponseData)
 	if err != nil {
 		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "Unmarshal Error"})
+		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "Unmarshal Error"})
 	}
-	
+
 	if respNew.StatusCode != http.StatusOK {
 		context.Echo().Logger.Info("Error : %v", ResponseData)
 		return context.JSON(respNew.StatusCode, ResponseData)

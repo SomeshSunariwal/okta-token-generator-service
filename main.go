@@ -14,7 +14,6 @@ type MainHandler struct {
 	apiHandler api.Handler
 }
 
-
 func main() {
 	e := echo.New()
 
@@ -22,7 +21,7 @@ func main() {
 
 	// Require Parameter For Heroku to start service on some port
 	PORT := os.Getenv("PORT")
-	if PORT == ""{
+	if PORT == "" {
 		PORT = "8080"
 	}
 
@@ -33,7 +32,7 @@ func main() {
 	e.POST("/revoke-all", mainHandler.apiHandler.RevokeAllGrant)
 
 	e.GET("/", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, map[string]string{"message" : "I am working"})
+		return c.JSON(http.StatusOK, map[string]string{"message": "I am working"})
 	})
 
 	// Adding CORS to allow web browser to hit this service endpoint
@@ -47,6 +46,5 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "{'time':'${time_rfc3339}', 'method'='${method}', 'host'='${host}', 'remote_ip'='${remote_ip}', 'uri'='${uri}', 'latency'='${latency_human}', 'status'='${status}'}\n"}))
 
-
-    e.Start(":"+PORT)
+	e.Start(":" + PORT)
 }
