@@ -1,4 +1,4 @@
-module okta
+module github.com/SomeshSunariwal/okta-test
 
 go 1.16
 
