@@ -4,17 +4,20 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/SomeshSunariwal/okta-test/api"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 type MainHandler struct {
-	apiHandler Handler
+	apiHandler api.Handler
 }
 
 
 func main() {
 	e := echo.New()
+
+	mainHandler := MainHandler{}
 
 	// Require Parameter For Heroku to start service on some port
 	PORT := os.Getenv("PORT")
@@ -22,10 +25,8 @@ func main() {
 		PORT = "8080"
 	}
 
-
-
 	// POST Request to get okta token using auth code
-	e.POST("/token", )
+	e.POST("/token", mainHandler.apiHandler.Token)
 
 	// Adding CORS to allow web browser to hit this service endpoint
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{

@@ -32,19 +32,19 @@ func (handler Handler) Token(context echo.Context) error {
 		defer context.Request().Body.Close()
 
 		if err != nil {
-			e.Logger.Info("Error: %v", err)
+			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Unable to Read Request body"})
 		}
 
 		err = json.Unmarshal([]byte(receivedJSON), &RequestData)
 		if err != nil {
-			e.Logger.Info("Error: %v", err)
+			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Bad Request Body"})
 		}
 
 		Code := RequestData["code"]
 		if Code == nil {
-			e.Logger.Info("Error: %v", err)
+			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Authorization Code Not Found"})
 		}
 
@@ -59,7 +59,7 @@ func (handler Handler) Token(context echo.Context) error {
 		//Creating Request 
 		req, err := http.NewRequest("POST", HOST+"/oauth2/default/v1/token", strings.NewReader(form.Encode()))
 		if err != nil {
-			e.Logger.Info("Error: %v", err)
+			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Request Errorr"})
 		}
 
@@ -74,7 +74,7 @@ func (handler Handler) Token(context echo.Context) error {
 		// Reading Response
 		body, err := ioutil.ReadAll(respNew.Body)
 		if err != nil {
-			e.Logger.Info("Error: %v", err)
+			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "No Response Error"})
 		}
 
@@ -82,6 +82,7 @@ func (handler Handler) Token(context echo.Context) error {
 		var ResponseData map[string]interface{}
 		err = json.Unmarshal(body, &ResponseData)
 		if err != nil {
+			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "Unmarshal Error"})
 		}
 
