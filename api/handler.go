@@ -3,6 +3,7 @@ package api
 import (
 	b64 "encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -192,6 +193,9 @@ func (handler Handler) GetUserId(context echo.Context) error {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "SSWS "+config.SSWS_KEY)
+
+	fmt.Println("HOST", config.HOST)
+	fmt.Println("HOST", config.SSWS_KEY)
 
 	// Hitting the web server
 	respNew, _ := http.DefaultClient.Do(req)
