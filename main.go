@@ -29,6 +29,9 @@ func main() {
 	// POST Request to get okta token using auth code
 	e.POST("/token", mainHandler.apiHandler.Token)
 
+	// Revoke All Consent of a user
+	e.POST("/revoke-all", mainHandler.apiHandler.RevokeAllGrant)
+
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{"message" : "I am working"})
 	})

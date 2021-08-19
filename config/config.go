@@ -6,12 +6,14 @@ var (
 	HOST          = "Your_HOST"
 	CLIENT_ID     = "Your_App_Client_Id"
 	CLIENT_SECRET = "Your_App_Client_Secret"
+	SSWS_KEY 	  = "YOUR_API_SECRET_Key"
 )
 
 type Config struct {
 	HOST          string
 	CLIENT_ID     string
 	CLIENT_SECRET string
+	SSWS_KEY      string
 }
 
 func ConfigGenerator() Config {
@@ -33,6 +35,12 @@ func ConfigGenerator() Config {
 		config.HOST = CLIENT_SECRET
 	}
 	config.CLIENT_SECRET = clientSecret
+	
+	sswsKey := os.Getenv("SSWS_KEY")
+	if sswsKey == "" {
+		config.HOST = SSWS_KEY
+	}
+	config.CLIENT_SECRET = sswsKey
 
     return config
 }
