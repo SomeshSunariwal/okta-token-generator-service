@@ -1,13 +1,12 @@
 package api
 
 import (
+	b64 "encoding/base64"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-
-	b64 "encoding/base64"
 
 	"github.com/SomeshSunariwal/okta-token-generator-service/config"
 	"github.com/labstack/echo/v4"
@@ -15,12 +14,6 @@ import (
 
 type Handler struct {
 }
-
-var (
-	HOST     = "https://dev-852842.okta.com"
-	CLIENT_ID = "0oa43rs29g4wXhT804x7"
-	CLIENT_SECRET = "saqxXSxdT8RKlL1YxoMJpzbQbXVYlrUvHyaQedQc"
-)
 
 func (handler Handler) Token(context echo.Context) error {
 
