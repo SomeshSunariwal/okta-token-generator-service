@@ -141,13 +141,13 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 
 	// Making Response Json.
 	var ResponseData map[string]interface{}
-	err = json.Unmarshal(body, &ResponseData)
-	if err != nil {
-		context.Echo().Logger.Info("Error : %v", err)
-		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "Unmarshal Error"})
-	}
 
 	if respNew.StatusCode != http.StatusNoContent {
+		err = json.Unmarshal(body, &ResponseData)
+		if err != nil {
+			context.Echo().Logger.Info("Error : %v", err)
+			return context.JSON(http.StatusInternalServerError, map[string]string{"message": "Unmarshal Error"})
+		}
 		context.Echo().Logger.Info("Error : %v", ResponseData)
 		return context.JSON(respNew.StatusCode, ResponseData)
 	}
