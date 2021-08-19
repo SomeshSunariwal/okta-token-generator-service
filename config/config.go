@@ -20,16 +20,19 @@ func ConfigGenerator() Config {
 	if host == "" {
 		config.HOST = HOST
 	}
-	
+	config.HOST = host
+
 	clientId := os.Getenv("CLIENT_ID")
 	if clientId == "" {
 		config.HOST = CLIENT_ID
 	}
+	config.CLIENT_ID = clientId
 
 	clientSecret := os.Getenv("CLIENT_SECRET")
 	if clientSecret == "" {
 		config.HOST = CLIENT_SECRET
 	}
+	config.CLIENT_SECRET = clientSecret
 
     return config
 }
