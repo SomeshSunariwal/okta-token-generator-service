@@ -32,7 +32,12 @@ func main() {
 	e.POST("/revoke-all", mainHandler.apiHandler.RevokeAllGrant)
 
 	e.GET("/", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, map[string]string{"message": "I am working"})
+		return c.HTML(http.StatusOK,
+			`
+			<div>
+				<h1>Hello There !</h1>
+			</div>
+		`)
 	})
 
 	// Adding CORS to allow web browser to hit this service endpoint
