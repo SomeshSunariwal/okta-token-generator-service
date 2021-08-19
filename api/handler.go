@@ -9,6 +9,7 @@ import (
 
 	b64 "encoding/base64"
 
+	"github.com/SomeshSunariwal/okta-token-generator-service/config"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,7 +24,7 @@ var (
 
 func (handler Handler) Token(context echo.Context) error {
 
-	AuthToken := CLIENT_ID + ":" + CLIENT_SECRET
+	AuthToken := config.CLIENT_ID + ":" + config.CLIENT_SECRET
 
 	Base64Token := b64.StdEncoding.EncodeToString([]byte(AuthToken))
 
@@ -57,7 +58,7 @@ func (handler Handler) Token(context echo.Context) error {
 		form.Add("redirect_uri", "http://localhost:3000")
 		
 		//Creating Request 
-		req, err := http.NewRequest("POST", HOST+"/oauth2/default/v1/token", strings.NewReader(form.Encode()))
+		req, err := http.NewRequest("POST", config.HOST+ "/oauth2/default/v1/token", strings.NewReader(form.Encode()))
 		if err != nil {
 			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusBadRequest, map[string]string{"message" : "Request Errorr"})
