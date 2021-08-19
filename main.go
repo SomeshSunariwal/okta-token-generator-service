@@ -31,6 +31,8 @@ func main() {
 	// Revoke All Consent of a user
 	e.POST("/revoke-all", mainHandler.apiHandler.RevokeAllGrant)
 
+	e.POST("/user", mainHandler.apiHandler.GetUserId)
+
 	e.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK,
 			`
