@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/SomeshSunariwal/okta-test/api"
+	"github.com/SomeshSunariwal/okta-token-generator-service/api"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -27,7 +27,7 @@ func main() {
 
 	// POST Request to get okta token using auth code
 	e.POST("/token", mainHandler.apiHandler.Token)
-	
+
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{"message" : "I am working"})
 	})
