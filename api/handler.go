@@ -3,8 +3,6 @@ package api
 import (
 	b64 "encoding/base64"
 	"encoding/json"
-	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -120,9 +118,8 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 	email := Email.(string)
 
 	//Creating Request
-	req, err := http.NewRequest("DELETE", config.HOST+"api/v1/users/"+email, nil)
+	req, err := http.NewRequest("DELETE", config.HOST+"/api/v1/users/"+email+"/grants", nil)
 	if err != nil {
-		context.Echo().Logger.Info("Error : %v", err)
 		return context.JSON(http.StatusBadRequest, map[string]string{"message": "Request Errorr"})
 	}
 
@@ -134,12 +131,26 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 	// Hitting the web server
 	respNew, _ := http.DefaultClient.Do(req)
 
-	fmt.Println("respNew", respNew)
-	if respNew.StatusCode != http.StatusOK {
-		context.Echo().Logger.Info("Error : %v", errors.New("status Code Not Ok"))
-		return context.JSON(respNew.StatusCode, map[string]string{"error": "Status Not Ok"})
+	// Reading Response
+	body, err := ioutil.ReadAll(respNew.Body)
+	if err != nil {
+		context.Echo().Logger.Info("Error : %v", err)
+		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "No Response Error"})
 	}
 
-	return context.JSON(http.StatusOK, map[string]string{"message": "All Consent/Grant Revoked for " + email})
+	// Making Response Json.
+	var ResponseData map[string]interface{}
+	err = json.Unmarshal(body, &ResponseData)
+	if err != nil {
+		context.Echo().Logger.Info("Error : %v", err)
+		return context.JSON(http.StatusInternalServerError, map[string]string{"message": "Unmarshal Error"})
+	}
+
+	if respNew.StatusCode != http.StatusOK {
+		context.Echo().Logger.Info("Error : %v", ResponseData)
+		return context.JSON(respNew.StatusCode, ResponseData)
+	}
+
+	return context.JSON(http.StatusOK, ResponseData)
 
 }
