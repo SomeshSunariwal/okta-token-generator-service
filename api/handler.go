@@ -3,7 +3,6 @@ package api
 import (
 	b64 "encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -160,6 +159,7 @@ func (handler Handler) RevokeAllGrant(context echo.Context) error {
 // GetUserId - This API is used to Get UserId from User Email
 func (handler Handler) GetUserId(context echo.Context) error {
 	config := config.ConfigGenerator()
+
 	var RequestData map[string]interface{}
 	receivedJSON, err := ioutil.ReadAll(context.Request().Body)
 	defer context.Request().Body.Close()
@@ -193,9 +193,6 @@ func (handler Handler) GetUserId(context echo.Context) error {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "SSWS "+config.SSWS_KEY)
-
-	fmt.Println("HOST", config.HOST)
-	fmt.Println("HOST", config.SSWS_KEY)
 
 	// Hitting the web server
 	respNew, _ := http.DefaultClient.Do(req)

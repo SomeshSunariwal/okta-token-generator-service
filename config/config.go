@@ -40,7 +40,7 @@ func ConfigGenerator() Config {
 	if sswsKey == "" {
 		config.HOST = SSWS_KEY
 	}
-	config.CLIENT_SECRET = sswsKey
+	config.SSWS_KEY = sswsKey
 
 	return config
 }
