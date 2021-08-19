@@ -78,12 +78,18 @@ func (handler Handler) Token(context echo.Context) error {
 			return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "No Response Error"})
 		}
 
+		
 		// Making Response Json.
 		var ResponseData map[string]interface{}
 		err = json.Unmarshal(body, &ResponseData)
 		if err != nil {
 			context.Echo().Logger.Info("Error : %v", err)
 			return context.JSON(http.StatusInternalServerError, map[string]string{"message" : "Unmarshal Error"})
+		}
+		
+		if respNew.StatusCode != http.StatusOK {
+			context.Echo().Logger.Info("Error : %v", ResponseData)
+			return context.JSON(respNew.StatusCode, ResponseData)
 		}
 
 		return context.JSON(http.StatusOK, ResponseData)
