@@ -3,6 +3,7 @@ package api
 import (
 	b64 "encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -193,6 +194,8 @@ func (handler Handler) GetUserId(context echo.Context) error {
 
 	// Hitting the web server
 	respNew, _ := http.DefaultClient.Do(req)
+
+	fmt.Println("req :", respNew)
 
 	// Reading Response
 	body, err := ioutil.ReadAll(respNew.Body)
